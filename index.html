@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>勾股定理</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+    <style>
+      body {
+        --base-y: 200px;
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        background-color: #1e1e2e;
+      }
+
+      .waiting {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1e1e2e;
+        z-index: 100;
+      }
+
+      .done .waiting {
+        display: none;
+      }
+
+      .squ {
+        position: relative;
+      }
+
+      .triangle {
+        --size: 100px;
+        --x: 0px;
+        --y: 0px;
+        --r: 0deg;
+        position: absolute;
+        width: calc(1.73205081 * var(--size));
+        height: var(--size);
+        background-color: #6c7086;
+        color: #cdd6f4;
+        clip-path: polygon(0 0, 0 100%, 100% 0);
+        border-top: 1px solid #1e1e2e;
+        border-left: 1px solid #1e1e2e;
+        transition: 0.4s ease-in-out transform, 0.2s linear opacity;
+        transform: translate(var(--x), calc(var(--y) + var(--base-y)))
+          rotate(var(--r));
+      }
+
+      .char {
+        transform: rotate(calc(-1 * var(--r)));
+        transition: 0.4s ease-in-out transform;
+      }
+
+      .a {
+        position: absolute;
+        top: calc(50% - 16px);
+        left: 4px;
+      }
+
+      .b {
+        position: absolute;
+        top: 4px;
+        left: calc(50% - 8px);
+      }
+
+      .c {
+        position: absolute;
+        top: calc(50% - 20px);
+        left: calc(50% - 12px);
+      }
+
+      .s0 .t1,
+      .s0 .t2,
+      .s0 .t3,
+      .s0 .t4 {
+        --y: 100px;
+      }
+
+      .s1 .t1,
+      .s1 .t2,
+      .s1 .t3,
+      .s1 .t4 {
+        --x: 12px;
+        --y: 150px;
+        --r: 30deg;
+      }
+
+      .s2 .t2,
+      .s2 .t3,
+      .s2 .t4 {
+        --x: 112px;
+        --y: 50px;
+        --r: -60deg;
+      }
+
+      .s3 .t3,
+      .s3 .t4 {
+        --x: 12px;
+        --y: -50px;
+        --r: -150deg;
+      }
+
+      .s4 .t4 {
+        --x: -87px;
+        --y: 50px;
+        --r: -240deg;
+      }
+
+      @keyframes light {
+        0% {
+          border-color: transparent;
+        }
+
+        50% {
+          border-color: #f38ba8;
+        }
+
+        100% {
+          border-color: transparent;
+        }
+      }
+
+      .hl {
+        position: absolute;
+        top: calc(var(--base-y) + var(--hl-y));
+        box-sizing: border-box;
+        border: 4px solid transparent;
+        z-index: 10;
+      }
+
+      .s5:not(.s6) .hl {
+        --hl-y: -4px;
+        left: calc(50% - 2px);
+        width: 208px;
+        height: 208px;
+        animation: light 2s;
+        transform: translateX(-50%);
+      }
+
+      .s7 .hl {
+        --hl-y: 60px;
+        left: calc(50% - 2px);
+        width: 80px;
+        height: 80px;
+        animation: light 2s;
+        transform: translateX(-50%) rotate(30deg);
+      }
+
+      button {
+        margin: 4px;
+        padding: 0 24px;
+        height: 40px;
+        margin-top: calc(100vh - 108px);
+      }
+
+      .sqr > p {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        bottom: 8px;
+        width: 100%;
+        left: 0;
+        text-align: center;
+      }
+
+      mjx-container[jax='CHTML'][display='true'] {
+        display: inline !important;
+      }
+
+      .right-text {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+      }
+
+      .right-text p {
+        display: none;
+      }
+
+      .s5 .v5,
+      .s7 .v7,
+      .s8 .v8,
+      .s9 .v9,
+      .s10 .v10,
+      .s12 .v12 {
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="waiting">
+      <p>请耐心等待资源文件加载完成。</p>
+    </div>
+    <div class="con">
+      <div class="sqr">
+        <div class="triangle t1">
+          <span class="char a">a</span>
+          <span class="char b">b</span>
+          <span class="char c">c</span>
+        </div>
+        <div class="triangle t2">
+          <span class="char a">a</span>
+          <span class="char b">b</span>
+          <span class="char c">c</span>
+        </div>
+        <div class="triangle t3">
+          <span class="char a">a</span>
+          <span class="char b">b</span>
+          <span class="char c">c</span>
+        </div>
+        <div class="triangle t4">
+          <span class="char a">a</span>
+          <span class="char b">b</span>
+          <span class="char c">c</span>
+        </div>
+
+        <p class="text"></p>
+
+        <div class="hl"></div>
+      </div>
+      <button class="prv">上一步</button>
+      <button class="nxt">下一步</button>
+
+      <div class="right-text">
+        <p class="v5">由题，$$S_小=c^{2}$$</p>
+        <p class="v7">，$$S_大=(b-a)^{2}$$</p>
+        <p class="v8">，$$S_三=2ab$$。</p>
+        <p class="v9">$$\because S_大=S_三+S_小$$</p>
+        <p class="v10">$$\therefore(a+b)^{2}=2ab+(b-a)^{2}$$</p>
+        <p class="v12">解得$$a^{2}+b^{2}=c^{2}$$</p>
+      </div>
+
+      <div class="math" hidden>
+        <span class="a">$$a$$</span>
+        <span class="b">$$b$$</span>
+        <span class="c">$$c$$</span>
+        <span class="a2">$$a^{2}$$</span>
+        <span class="b2">$$b^{2}$$</span>
+        <span class="c2">$$c^{2}$$</span>
+        <span class="bMa">$$(b-a)$$</span>
+        <span class="bMa2">$$(b-a)^{2}$$</span>
+        <span class="ano1">$$S_三=4*\frac{1}{2}*ab=2ab$$</span>
+        <span class="ano2">$$\because S_大=S_三+S_小$$</span>
+        <span class="ano3">$$\therefore(a+b)^{2}=2ab+(b-a)^{2}$$</span>
+        <span class="ano4">$$a^{2}+b^{2}+2ab=2ab+c^{2}$$</span>
+        <span class="ano5">$$a^{2}+b^{2}=c^{2}$$</span>
+      </div>
+    </div>
+
+    <script>
+      addEventListener('load', () => {
+        document.body.classList.add('done')
+        const con = document.querySelector('.con')
+        const prv = document.querySelector('.prv')
+        const nxt = document.querySelector('.nxt')
+        const text = document.querySelector('.text')
+        const math = document.querySelector('.math')
+        let nowStep = 0
+        const max = 24 - 1
+        const $ = (token) => {
+          return math.querySelector('.' + token).innerHTML
+        }
+        const texts = [
+          `这是一个三角形，设它的长短边为${$('a')}，边为${$('b')}，斜边为${$(
+            'c'
+          )}。`,
+          '我们将它复制为四份并旋转，组成一个大正方形，在里面有一个小正方形。',
+          '复制，翻转。',
+          '再一次复制，翻转。',
+          '完成。',
+          `这是大正方形，它可以看出的边长是${$('c')}，即它的面积为${$('c2')}。`,
+          '麻烦你再点一下（',
+          `这是小正方形，它可以看出的边长是${$('bMa')}，即它的面积为${$(
+            'bMa2'
+          )}。`,
+          `这四个三角形的面积和为${$('ano1')}`,
+          $('ano2'),
+          $('ano3'),
+          $('ano4'),
+          `解得${$('ano5')}`,
+          '没啦',
+          '没啦',
+          '真没啦',
+          '真没啦',
+          '真没啦！',
+          '真没啦！',
+          '真没啦！',
+          '真没啦！！',
+          '真没啦！！！',
+          '你怎么就不信邪呢（恼',
+          '孺子不可教矣（',
+        ]
+        const updClass = () => {
+          con.removeAttribute('class')
+          con.classList.add('con')
+          for (let i = 0; i <= nowStep; i++) {
+            con.classList.add('s' + i)
+          }
+          text.innerHTML = texts[nowStep]
+          prv.disabled = nowStep == 0
+          nxt.disabled = nowStep == max
+        }
+        prv.addEventListener('click', () => {
+          nowStep--
+          nowStep < 0 ? (nowStep = 0) : 0
+          updClass()
+        })
+        nxt.addEventListener('click', () => {
+          nowStep++
+          nowStep > max ? (nowStep = max) : 0
+          updClass()
+        })
+        updClass()
+      })
+    </script>
+  </body>
+</html>
